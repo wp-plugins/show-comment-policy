@@ -3,7 +3,7 @@
 Plugin Name: Show Comment Policy
 Plugin URI: http://www.jimmyscode.com/wordpress/show-comment-policy/
 Description: Display your comment policy above the comments form on posts or pages.
-Version: 0.0.2
+Version: 0.0.3
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('SCP_PLUGIN_NAME', 'Show Comment Policy');
 	// plugin constants
-	define('SCP_VERSION', '0.0.2');
+	define('SCP_VERSION', '0.0.3');
 	define('SCP_SLUG', 'show-comment-policy');
 	define('SCP_LOCAL', 'scp');
 	define('SCP_OPTION', 'scp');
@@ -55,7 +55,7 @@ License: GPLv2 or later
 	// validation function
 	function scp_validation($input) {
 		// sanitize textarea
-		$input[SCP_DEFAULT_TEXT_NAME] = wp_kses(force_balance_tags($input[SCP_DEFAULT_TEXT_NAME]), wp_kses_allowed_html('post'));
+		$input[SCP_DEFAULT_TEXT_NAME] = wp_kses_post(force_balance_tags($input[SCP_DEFAULT_TEXT_NAME]));
 		return $input;
 	} 
 
