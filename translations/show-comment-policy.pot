@@ -1,0 +1,123 @@
+# Copyright (C) 2014 Show Comment Policy
+# This file is distributed under the same license as the Show Comment Policy package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Show Comment Policy 0.0.3\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/show-comment-policy\n"
+"POT-Creation-Date: 2014-04-22 02:40:12+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: show-comment-policy.php:34
+msgid "Do not access this file directly."
+msgstr ""
+
+#: show-comment-policy.php:72
+msgid "You do not have sufficient permission to access this page"
+msgstr ""
+
+#: show-comment-policy.php:76
+msgid " by "
+msgstr ""
+
+#: show-comment-policy.php:77
+msgid "You are running plugin version"
+msgstr ""
+
+#: show-comment-policy.php:82
+msgid "Plugin Settings"
+msgstr ""
+
+#: show-comment-policy.php:86 show-comment-policy.php:89
+msgid "Is plugin enabled? Uncheck this to turn it off temporarily."
+msgstr ""
+
+#: show-comment-policy.php:86
+msgid "Plugin enabled?"
+msgstr ""
+
+#: show-comment-policy.php:90
+msgid "Choose where to display the comment policy"
+msgstr ""
+
+#: show-comment-policy.php:94
+msgid "Where to display comment policy? On Posts, Pages, or both?"
+msgstr ""
+
+#: show-comment-policy.php:95
+msgid "Enter comment policy text"
+msgstr ""
+
+#: show-comment-policy.php:98
+msgid ""
+"Type the comment policy text you want to display above the comments form on "
+"your site. HTML allowed."
+msgstr ""
+
+#: show-comment-policy.php:105 show-comment-policy.php:202
+msgid "Documentation"
+msgstr ""
+
+#: show-comment-policy.php:106 show-comment-policy.php:203
+msgid "FAQ"
+msgstr ""
+
+#: show-comment-policy.php:107
+msgid "If you like this plugin, please "
+msgstr ""
+
+#: show-comment-policy.php:109
+msgid "rate it on WordPress.org"
+msgstr ""
+
+#: show-comment-policy.php:111
+msgid "and click the "
+msgstr ""
+
+#: show-comment-policy.php:113
+msgid "Works"
+msgstr ""
+
+#: show-comment-policy.php:115
+msgid "button. For support please visit the "
+msgstr ""
+
+#: show-comment-policy.php:117
+msgid "forums"
+msgstr ""
+
+#: show-comment-policy.php:166
+msgid "is currently disabled."
+msgstr ""
+
+#: show-comment-policy.php:189
+msgid "Settings"
+msgstr ""
+
+#: show-comment-policy.php:201
+msgid "Support"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Show Comment Policy"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.jimmyscode.com/wordpress/show-comment-policy/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Display your comment policy above the comments form on posts or pages."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jimmy Pe&ntilde;a"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.jimmyscode.com/"
+msgstr ""

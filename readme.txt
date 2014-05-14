@@ -33,7 +33,7 @@ Use it for:
 
 = How do I use the plugin? =
 
-Go to Settings &raquo; Show Comment Policy and enter the text you want to see above the comment form. Make sure the "enabled" checkbox is checked. Note that the comment policy will only be displayed on pages/posts where the comments are open. If comments are closed, the policy will not appear.
+Go to Settings &raquo; Show Comment Policy and enter the text you want to see above the comment form. Make sure the "enabled" checkbox is checked. Note that the comment policy will only be displayed on pages/posts where the comments are open. If comments are closed, the policy will not appear. You may also includes shortcodes which will be processed for output.
 
 = I entered some text but don't see anything on the page. =
 
@@ -54,8 +54,15 @@ Add this to your functions.php:
 == Screenshots ==
 
 1. Plugin settings page
+2. The comments section showing the comment policy entered on the plugin settings page
 
 == Changelog ==
+
+= 0.0.4 =
+- option to hide output for logged in users
+- now processes shortcodes
+- code optimizations
+- plugin settings page is now tabbed
 
 = 0.0.3 =
 - fix 2 for wp_kses
@@ -68,6 +75,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.0.4 =
+- option to hide output for logged in users; now processes shortcodes; code optimizations; plugin settings page is now tabbed
 
 = 0.0.3 =
 - fix 2 for wp_kses

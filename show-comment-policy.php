@@ -3,7 +3,7 @@
 Plugin Name: Show Comment Policy
 Plugin URI: http://www.jimmyscode.com/wordpress/show-comment-policy/
 Description: Display your comment policy above the comments form on posts or pages.
-Version: 0.0.3
+Version: 0.0.4
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('SCP_PLUGIN_NAME', 'Show Comment Policy');
 	// plugin constants
-	define('SCP_VERSION', '0.0.3');
+	define('SCP_VERSION', '0.0.4');
 	define('SCP_SLUG', 'show-comment-policy');
 	define('SCP_LOCAL', 'scp');
 	define('SCP_OPTION', 'scp');
@@ -23,103 +23,97 @@ License: GPLv2 or later
 	define('SCP_DEFAULT_TEXT', '');
 	define('SCP_DEFAULT_DISPLAY_ON_POSTS', true);
 	define('SCP_DEFAULT_DISPLAY_ON_PAGES', true);
+	define('SCP_DEFAULT_NONLOGGEDIN', true);
 	/* option array member names */
 	define('SCP_DEFAULT_ENABLED_NAME', 'enabled');
 	define('SCP_DEFAULT_TEXT_NAME', 'texttoshow');
 	define('SCP_DEFAULT_DISPLAY_ON_POSTS_NAME', 'displayonposts');
 	define('SCP_DEFAULT_DISPLAY_ON_PAGES_NAME', 'displayonpages');
+	define('SCP_DEFAULT_NONLOGGEDIN_NAME', 'nonloggedinonly');
 	
 	// oh no you don't
 	if (!defined('ABSPATH')) {
-		wp_die(__('Do not access this file directly.', SCP_LOCAL));
+		wp_die(__('Do not access this file directly.', scp_get_local()));
 	}
 
-	// delete option when plugin is uninstalled
-	register_uninstall_hook(__FILE__, 'uninstall_scp_plugin');
-	function uninstall_scp_plugin() {
-		delete_option(SCP_OPTION);
-	}
 	// localization to allow for translations
 	add_action('init', 'scp_translation_file');
 	function scp_translation_file() {
-		$plugin_path = plugin_basename(dirname(__FILE__) . '/translations');
-		load_plugin_textdomain(SCP_LOCAL, '', $plugin_path);
+		$plugin_path = scp_get_path() . '/translations';
+		load_plugin_textdomain(scp_get_local(), '', $plugin_path);
 	}
 	// tell WP that we are going to use new options
 	// also, register the admin CSS file for later inclusion
 	add_action('admin_init', 'scp_options_init');
 	function scp_options_init() {
-		register_setting(SCP_OPTIONS_NAME, SCP_OPTION, 'scp_validation');
+		register_setting(SCP_OPTIONS_NAME, scp_get_option(), 'scp_validation');
 		register_scp_admin_style();
 	}
 	// validation function
 	function scp_validation($input) {
 		// sanitize textarea
-		$input[SCP_DEFAULT_TEXT_NAME] = wp_kses_post(force_balance_tags($input[SCP_DEFAULT_TEXT_NAME]));
+		$input[SCP_DEFAULT_TEXT_NAME] = wp_kses_data(force_balance_tags($input[SCP_DEFAULT_TEXT_NAME]));
 		return $input;
 	} 
 
 	// add Settings sub-menu
 	add_action('admin_menu', 'scp_plugin_menu');
 	function scp_plugin_menu() {
-		add_options_page(SCP_PLUGIN_NAME, SCP_PLUGIN_NAME, SCP_PERMISSIONS_LEVEL, SCP_SLUG, 'scp_page');
+		add_options_page(SCP_PLUGIN_NAME, SCP_PLUGIN_NAME, SCP_PERMISSIONS_LEVEL, scp_get_slug(), 'scp_page');
 	}
 	// plugin settings page
 	// http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
 	function SCP_page() {
 		// check perms
 		if (!current_user_can(SCP_PERMISSIONS_LEVEL)) {
-			wp_die(__('You do not have sufficient permission to access this page', SCP_LOCAL));
+			wp_die(__('You do not have sufficient permission to access this page', scp_get_local()));
 		}
 		?>
 		<div class="wrap">
-			<h2 id="plugintitle"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/policy.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo SCP_PLUGIN_NAME; _e(' by ', SCP_LOCAL); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
-			<div><?php _e('You are running plugin version', SCP_LOCAL); ?> <strong><?php echo SCP_VERSION; ?></strong>.</div>
+			<h2 id="plugintitle"><img src="<?php echo plugins_url(scp_get_path() . '/images/policy.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo SCP_PLUGIN_NAME; _e(' by ', scp_get_local()); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+			<div><?php _e('You are running plugin version', scp_get_local()); ?> <strong><?php echo SCP_VERSION; ?></strong>.</div>
+
+			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
+			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+
+			<h2 class="nav-tab-wrapper">
+			  <a href="?page=<?php echo scp_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', scp_get_local()); ?></a>
+				<a href="?page=<?php echo scp_get_slug(); ?>&tab=support" class="nav-tab <?php echo $active_tab == 'support' ? 'nav-tab-active' : ''; ?>"><?php _e('Support', scp_get_local()); ?></a>
+			</h2>
+
 			<form method="post" action="options.php">
 			<?php settings_fields(SCP_OPTIONS_NAME); ?>
 			<?php $options = scp_getpluginoptions(); ?>
-			<?php update_option(SCP_OPTION, $options); ?>
-			<h3 id="settings"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/settings.png')) ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', SCP_LOCAL); ?></h3>
-				<?php submit_button(); ?>
-
+			<?php update_option(scp_get_option(), $options); ?>
+			<?php if ($active_tab == 'settings') { ?>
+			<h3 id="settings"><img src="<?php echo plugins_url(scp_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', scp_get_local()); ?></h3>
 				<table class="form-table" id="theme-options-wrap">
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', SCP_LOCAL); ?>" for="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', SCP_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_ENABLED_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', scp_get_local()); ?>" for="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', scp_get_local()); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_ENABLED_NAME]); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', SCP_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Choose where to display the comment policy', SCP_LOCAL); ?>"><?php _e('Choose where to display the comment policy', SCP_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_POSTS_NAME; ?>]" name="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_POSTS_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME]); ?> /> Posts
-						<input type="checkbox" id="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_PAGES_NAME; ?>]" name="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_PAGES_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_DISPLAY_ON_PAGES_NAME]); ?> /> Pages</td>
+					<tr valign="top"><td colspan="2"><?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', scp_get_local()); ?></td></tr>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Choose where to display the comment policy', scp_get_local()); ?>"><?php _e('Choose where to display the comment policy', scp_get_local()); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_POSTS_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_POSTS_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME]); ?> /> Posts
+						<input type="checkbox" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_PAGES_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_DISPLAY_ON_PAGES_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_DISPLAY_ON_PAGES_NAME]); ?> /> Pages</td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Where to display comment policy? On Posts, Pages, or both?', SCP_LOCAL); ?></td></tr>					
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter comment policy text', SCP_LOCAL); ?>" for="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]"><?php _e('Enter comment policy text', SCP_LOCAL); ?></label></strong></th>
-						<td><textarea rows="12" cols="75" id="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]" name="<?php echo SCP_OPTION; ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]"><?php echo $options[SCP_DEFAULT_TEXT_NAME]; ?></textarea></td>
+					<tr valign="top"><td colspan="2"><?php _e('Where to display comment policy? On Posts, Pages, or both?', scp_get_local()); ?></td></tr>		
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter comment policy text', scp_get_local()); ?>" for="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]"><?php _e('Enter comment policy text', scp_get_local()); ?></label></strong></th>
+						<td><textarea rows="12" cols="75" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_TEXT_NAME; ?>]"><?php echo $options[SCP_DEFAULT_TEXT_NAME]; ?></textarea></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Type the comment policy text you want to display above the comments form on your site. HTML allowed.', SCP_LOCAL); ?></td></tr>
+					<tr valign="top"><td colspan="2"><?php _e('Type the comment policy text you want to display above the comments form on your site. HTML allowed.', scp_get_local()); ?></td></tr>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Show to non-logged-in users only?', scp_get_local()); ?>" for="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_NONLOGGEDIN_NAME; ?>]"><?php _e('Show to non-logged-in users only?', scp_get_local()); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_NONLOGGEDIN_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_NONLOGGEDIN_NAME; ?>]" value="1" <?php checked('1', $options[SCP_DEFAULT_NONLOGGEDIN_NAME]); ?> /></td>
+					</tr>
+					<tr valign="top"><td colspan="2"><?php _e('Check this box to display the comment policy to non-logged-in users only.', scp_get_local()); ?></td></tr>
 					</table>
 				<?php submit_button(); ?>
-			</form>
-			<hr />
-			<h3 id="support"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/support.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /> Support</h3>
+			<?php } else { ?>
+			<h3 id="support"><img src="<?php echo plugins_url(scp_get_path() . '/images/support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', scp_get_local()); ?></h3>
 				<div class="support">
-				<?php echo '<a href="http://wordpress.org/extend/plugins/' . SCP_SLUG . '/">' . __('Documentation', SCP_LOCAL) . '</a> | ';
-					echo '<a href="http://wordpress.org/plugins/' . SCP_SLUG . '/faq/">' . __('FAQ', SCP_LOCAL) . '</a><br />';
-					_e('If you like this plugin, please ', SCP_LOCAL);
-					echo '<a href="http://wordpress.org/support/view/plugin-reviews/' . SCP_SLUG . '/">';
-					_e('rate it on WordPress.org', SCP_LOCAL);
-					echo '</a> ';
-					_e('and click the ', SCP_LOCAL);
-					echo '<a href="http://wordpress.org/plugins/' . SCP_SLUG .  '/#compatibility">';
-					_e('Works', SCP_LOCAL);
-					echo '</a> ';
-					_e('button. For support please visit the ', SCP_LOCAL);
-					echo '<a href="http://wordpress.org/support/plugin/' . SCP_SLUG . '">';
-					_e('forums', SCP_LOCAL);
-					echo '</a>.';
-				?>
-				<br /><br />
-				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>
+				<?php echo scp_getsupportinfo(scp_get_slug(), scp_get_local()); ?>
 				</div>
+			<?php } ?>
+			</form>
 		</div>
 		<?php }
 
@@ -127,27 +121,34 @@ License: GPLv2 or later
   add_action('comment_form_before','scp_commentpolicylink');
   function scp_commentpolicylink() {
 		$options = scp_getpluginoptions();
-		$enabled = $options[SCP_DEFAULT_ENABLED_NAME];
+		$enabled = (bool)$options[SCP_DEFAULT_ENABLED_NAME];
+		$nonloggedonly = $options[SCP_DEFAULT_NONLOGGEDIN_NAME];
 		if ($enabled) {
-			$want_on_posts = $options[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME];
-			$want_on_pages = $options[SCP_DEFAULT_DISPLAY_ON_PAGES_NAME];
-			$text = $options[SCP_DEFAULT_TEXT_NAME];
-		
-			// check if we want it on posts
-			if ($want_on_posts) {
-				if (is_single()) {
-					if (comments_open()) {
-						echo '<div class="scp-comment-policy">' . $text . '</div>';
+			if (is_user_logged_in() && $nonloggedonly) {
+				// user is logged on but we don't want to show it to logged in users
+				$output = '<!-- ' . SCP_PLUGIN_NAME . ': ' . __('Set to show to non-logged-in users only, and current user is logged in.', scp_get_local()) . ' -->';
+			} else {
+				$want_on_posts = $options[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME];
+				$want_on_pages = $options[SCP_DEFAULT_DISPLAY_ON_PAGES_NAME];
+				$text = $options[SCP_DEFAULT_TEXT_NAME];
+			
+				// check if we want it on posts
+				if ($want_on_posts) {
+					if (is_single()) {
+						if (comments_open()) {
+							$output = '<div class="scp-comment-policy">' . do_shortcode($text) . '</div>';
+						}
 					}
-				}
-			} // end posts check
-			if ($want_on_pages) {
-				if (is_page()) {
-					if (comments_open()) {
-						echo '<div class="scp-comment-policy">' . $text . '</div>';
+				} // end posts check
+				if ($want_on_pages) {
+					if (is_page()) {
+						if (comments_open()) {
+							$output = '<div class="scp-comment-policy">' . do_shortcode($text) . '</div>';
+						}
 					}
-				}
-			} // end pages check
+				} // end pages check
+			}
+			echo $output;
 		} // end enabled
 	}
 		
@@ -158,12 +159,12 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(SCP_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if ($_GET['page'] == SCP_SLUG) { // we are on this plugin's settings page
+				if ($_GET['page'] == scp_get_slug()) { // we are on this plugin's settings page
 					$options = scp_getpluginoptions();
 					if ($options != false) {
-						$enabled = $options[SCP_DEFAULT_ENABLED_NAME];
+						$enabled = (bool)$options[SCP_DEFAULT_ENABLED_NAME];
 						if (!$enabled) {
-							echo '<div id="message" class="error">' . SCP_PLUGIN_NAME . ' ' . __('is currently disabled.', SCP_LOCAL) . '</div>';
+							echo '<div id="message" class="error">' . SCP_PLUGIN_NAME . ' ' . __('is currently disabled.', scp_get_local()) . '</div>';
 						}
 					}
 				}
@@ -176,34 +177,31 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(SCP_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if ($_GET['page'] == SCP_SLUG) { // we are on this plugin's settings page
+				if ($_GET['page'] == scp_get_slug()) { // we are on this plugin's settings page
 					scp_admin_styles();
 				}
 			}
 		}
 	}
-	// add settings link on plugin page
+	// add helpful links to plugin page next to plugin name
 	// http://bavotasan.com/2009/a-settings-link-for-your-wordpress-plugins/
-	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'scp_plugin_settings_link');
-	function scp_plugin_settings_link($links) {
-		$settings_link = '<a href="options-general.php?page=' . SCP_SLUG . '">' . __('Settings', SCP_LOCAL) . '</a>';
-		array_unshift($links, $settings_link);
-		return $links;
-	}
 	// http://wpengineer.com/1295/meta-links-for-wordpress-plugins/
+	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'scp_plugin_settings_link');
 	add_filter('plugin_row_meta', 'scp_meta_links', 10, 2);
+	
+	function scp_plugin_settings_link($links) {
+		return scp_settingslink($links, scp_get_slug(), scp_get_local());
+	}
 	function scp_meta_links($links, $file) {
-		$plugin = plugin_basename(__FILE__);
-		// create link
-		if ($file == $plugin) {
+		if ($file == plugin_basename(__FILE__)) {
 			$links = array_merge($links,
-				array(
-					'<a href="http://wordpress.org/support/plugin/' . SCP_SLUG . '">' . __('Support', SCP_LOCAL) . '</a>',
-					'<a href="http://wordpress.org/extend/plugins/' . SCP_SLUG . '/">' . __('Documentation', SCP_LOCAL) . '</a>',
-					'<a href="http://wordpress.org/plugins/' . SCP_SLUG . '/faq/">' . __('FAQ', SCP_LOCAL) . '</a>'
+			array(
+				sprintf(__('<a href="http://wordpress.org/support/plugin/%s">Support</a>', scp_get_local()), scp_get_slug()),
+				sprintf(__('<a href="http://wordpress.org/extend/plugins/%s/">Documentation</a>', scp_get_local()), scp_get_slug()),
+				sprintf(__('<a href="http://wordpress.org/plugins/%s/faq/">FAQ</a>', scp_get_local()), scp_get_slug())
 			));
 		}
-		return $links;
+		return $links;	
 	}
 	// enqueue/register the admin CSS file
 	function scp_admin_styles() {
@@ -211,7 +209,7 @@ License: GPLv2 or later
 	}
 	function register_scp_admin_style() {
 		wp_register_style('scp_admin_style',
-			plugins_url(SCP_PATH . '/css/admin.css'),
+			plugins_url(scp_get_path() . '/css/admin.css'),
 			array(),
 			SCP_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/css/admin.css')),
 			'all');
@@ -220,17 +218,48 @@ License: GPLv2 or later
 	register_activation_hook(__FILE__, 'scp_activate');
 	function scp_activate() {
 		$options = scp_getpluginoptions();
-		update_option(SCP_OPTION, $options);
+		update_option(scp_get_option(), $options);
+		
+		// delete option when plugin is uninstalled
+		register_uninstall_hook(__FILE__, 'uninstall_scp_plugin');
 	}
+	function uninstall_scp_plugin() {
+		delete_option(scp_get_option());
+	}
+		
 	// generic function that returns plugin options from DB
 	// if option does not exist, returns plugin defaults
 	function scp_getpluginoptions() {
-		return get_option(SCP_OPTION, 
+		return get_option(scp_get_option(), 
 			array(
 				SCP_DEFAULT_ENABLED_NAME => SCP_DEFAULT_ENABLED, 
 				SCP_DEFAULT_TEXT_NAME => SCP_DEFAULT_TEXT, 
 				SCP_DEFAULT_DISPLAY_ON_POSTS_NAME => SCP_DEFAULT_DISPLAY_ON_POSTS, 
 				SCP_DEFAULT_DISPLAY_ON_PAGES_NAME => SCP_DEFAULT_DISPLAY_ON_PAGES, 
+				SCP_DEFAULT_NONLOGGEDIN_NAME => SCP_DEFAULT_NONLOGGEDIN
 			));
+	}
+	
+// encapsulate these and call them throughout the plugin instead of hardcoding the constants everywhere
+	function scp_get_slug() { return SCP_SLUG; }
+	function scp_get_local() { return SCP_LOCAL; }
+	function scp_get_option() { return SCP_OPTION; }
+	function scp_get_path() { return SCP_PATH; }
+	
+	function scp_settingslink($linklist, $slugname = '', $localname = '') {
+		$settings_link = sprintf( __('<a href="options-general.php?page=%s">Settings</a>', $localname), $slugname);
+		array_unshift($linklist, $settings_link);
+		return $linklist;
+	}
+	function scp_getsupportinfo($slugname = '', $localname = '') {
+		$output = sprintf( __('<a href="http://wordpress.org/extend/plugins/%s/">Documentation</a> | ', $localname), $slugname);
+		$output .= sprintf( __('<a href="http://wordpress.org/plugins/%s/faq/">FAQ</a><br />', $localname), $slugname);
+		$output .= sprintf( __('If you like this plugin, please <a href="http://wordpress.org/support/view/plugin-reviews/%s/">rate it on WordPress.org</a>', $localname), $slugname);
+		$output .= sprintf( __(' and click the <a href="http://wordpress.org/plugins/%s/#compatibility">Works</a> button. ', $localname), $slugname);
+		$output .= sprintf( __('For support please visit the <a href="http://wordpress.org/support/plugin/%s">forums</a>.', $localname), $slugname);
+		$output .= '<br /><br />';
+		$output .= '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>';
+		$output .= '<br /><br />';
+		return $output;				
 	}
 ?>
