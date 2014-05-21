@@ -58,6 +58,9 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.0.6 =
+- minor code fix
+
 = 0.0.5 = 
 - code fix
 
@@ -78,6 +81,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.0.6 =
+- minor code fix
 
 = 0.0.5 = 
 - code fix

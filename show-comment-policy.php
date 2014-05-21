@@ -3,7 +3,7 @@
 Plugin Name: Show Comment Policy
 Plugin URI: http://www.jimmyscode.com/wordpress/show-comment-policy/
 Description: Display your comment policy above the comments form on posts or pages.
-Version: 0.0.5
+Version: 0.0.6
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('SCP_PLUGIN_NAME', 'Show Comment Policy');
 	// plugin constants
-	define('SCP_VERSION', '0.0.5');
+	define('SCP_VERSION', '0.0.6');
 	define('SCP_SLUG', 'show-comment-policy');
 	define('SCP_LOCAL', 'scp');
 	define('SCP_OPTION', 'scp');
@@ -21,9 +21,9 @@ License: GPLv2 or later
 	/* default values */
 	define('SCP_DEFAULT_ENABLED', true);
 	define('SCP_DEFAULT_TEXT', '');
-	define('SCP_DEFAULT_DISPLAY_ON_POSTS', true);
-	define('SCP_DEFAULT_DISPLAY_ON_PAGES', true);
-	define('SCP_DEFAULT_NONLOGGEDIN', true);
+	define('SCP_DEFAULT_DISPLAY_ON_POSTS', false);
+	define('SCP_DEFAULT_DISPLAY_ON_PAGES', false);
+	define('SCP_DEFAULT_NONLOGGEDIN', false);
 	/* option array member names */
 	define('SCP_DEFAULT_ENABLED_NAME', 'enabled');
 	define('SCP_DEFAULT_TEXT_NAME', 'texttoshow');
@@ -123,6 +123,7 @@ License: GPLv2 or later
 		$options = scp_getpluginoptions();
 		$enabled = (bool)$options[SCP_DEFAULT_ENABLED_NAME];
 		$nonloggedonly = $options[SCP_DEFAULT_NONLOGGEDIN_NAME];
+		
 		if ($enabled) {
 			if (is_user_logged_in() && $nonloggedonly) {
 				// user is logged on but we don't want to show it to logged in users
