@@ -3,15 +3,15 @@
 Plugin Name: Show Comment Policy
 Plugin URI: http://www.jimmyscode.com/wordpress/show-comment-policy/
 Description: Display your comment policy above the comments form on posts or pages.
-Version: 0.0.8
+Version: 0.0.9
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
-
+if (!defined('SCP_PLUGIN_NAME')) {
 	define('SCP_PLUGIN_NAME', 'Show Comment Policy');
 	// plugin constants
-	define('SCP_VERSION', '0.0.8');
+	define('SCP_VERSION', '0.0.9');
 	define('SCP_SLUG', 'show-comment-policy');
 	define('SCP_LOCAL', 'scp');
 	define('SCP_OPTION', 'scp');
@@ -30,7 +30,7 @@ License: GPLv2 or later
 	define('SCP_DEFAULT_DISPLAY_ON_POSTS_NAME', 'displayonposts');
 	define('SCP_DEFAULT_DISPLAY_ON_PAGES_NAME', 'displayonpages');
 	define('SCP_DEFAULT_NONLOGGEDIN_NAME', 'nonloggedinonly');
-	
+}
 	// oh no you don't
 	if (!defined('ABSPATH')) {
 		wp_die(__('Do not access this file directly.', scp_get_local()));
@@ -76,7 +76,7 @@ License: GPLv2 or later
 		}
 		?>
 		<div class="wrap">
-			<h2 id="plugintitle"><img src="<?php echo plugins_url(scp_get_path() . '/images/policy.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo SCP_PLUGIN_NAME; _e(' by ', scp_get_local()); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+			<h2 id="plugintitle"><img src="<?php echo scp_getimagefilename('policy.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo SCP_PLUGIN_NAME; _e(' by ', scp_get_local()); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
 			<div><?php _e('You are running plugin version', scp_get_local()); ?> <strong><?php echo SCP_VERSION; ?></strong>.</div>
 
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
@@ -92,7 +92,7 @@ License: GPLv2 or later
 			<?php $options = scp_getpluginoptions(); ?>
 			<?php update_option(scp_get_option(), $options); ?>
 			<?php if ($active_tab == 'settings') { ?>
-			<h3 id="settings"><img src="<?php echo plugins_url(scp_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', scp_get_local()); ?></h3>
+			<h3 id="settings"><img src="<?php echo scp_getimagefilename('settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', scp_get_local()); ?></h3>
 				<table class="form-table" id="theme-options-wrap">
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', scp_get_local()); ?>" for="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', scp_get_local()); ?></label></strong></th>
 						<td><input type="checkbox" id="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo scp_get_option(); ?>[<?php echo SCP_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', scp_checkifset(SCP_DEFAULT_ENABLED_NAME, SCP_DEFAULT_ENABLED, $options)); ?> /></td>
@@ -117,7 +117,7 @@ License: GPLv2 or later
 					</table>
 				<?php submit_button(); ?>
 			<?php } else { ?>
-			<h3 id="support"><img src="<?php echo plugins_url(scp_get_path() . '/images/support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', scp_get_local()); ?></h3>
+			<h3 id="support"><img src="<?php echo scp_getimagefilename('support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', scp_get_local()); ?></h3>
 				<div class="support">
 				<?php echo scp_getsupportinfo(scp_get_slug(), scp_get_local()); ?>
 				</div>
@@ -138,7 +138,6 @@ License: GPLv2 or later
 			$nonloggedonly = SCP_DEFAULT_NONLOGGEDIN;
 		}
 
-		
 		$output = '';
 		
 		if ($enabled) {
@@ -169,7 +168,7 @@ License: GPLv2 or later
 			echo $output;
 		} // end enabled
 	}
-		
+
 	// show admin messages to plugin user
 	add_action('admin_notices', 'scp_showAdminMessages');
 	function scp_showAdminMessages() {
@@ -293,12 +292,15 @@ License: GPLv2 or later
 		return $output;
 	}
 	function scp_checkifset($optionname, $optiondefault, $optionsarr) {
-		return (!empty($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
+		return (isset($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
 	}
 	function scp_getlinebreak() {
 	  echo '<tr valign="top"><td colspan="2"></td></tr>';
 	}
 	function scp_explanationrow($msg = '') {
 		echo '<tr valign="top"><td></td><td><em>' . $msg . '</em></td></tr>';
+	}
+	function scp_getimagefilename($fname = '') {
+		return plugins_url(scp_get_path() . '/images/' . $fname);
 	}
 ?>

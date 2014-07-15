@@ -58,6 +58,9 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.0.9 =
+- minor code optimizations
+
 = 0.0.8 =
 - code fix
 - admin CSS and page updates
@@ -88,6 +91,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.0.9 =
+- minor code optimizations
 
 = 0.0.8 =
 - code fix; admin CSS and page updates
