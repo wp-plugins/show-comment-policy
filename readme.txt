@@ -58,6 +58,9 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.1.0 =
+- fixed validation issue
+
 = 0.0.9 =
 - minor code optimizations
 
@@ -91,6 +94,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.1.0 =
+- fixed validation issue
 
 = 0.0.9 =
 - minor code optimizations

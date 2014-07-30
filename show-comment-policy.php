@@ -3,15 +3,16 @@
 Plugin Name: Show Comment Policy
 Plugin URI: http://www.jimmyscode.com/wordpress/show-comment-policy/
 Description: Display your comment policy above the comments form on posts or pages.
-Version: 0.0.9
+Version: 0.1.0
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
+
 if (!defined('SCP_PLUGIN_NAME')) {
 	define('SCP_PLUGIN_NAME', 'Show Comment Policy');
 	// plugin constants
-	define('SCP_VERSION', '0.0.9');
+	define('SCP_VERSION', '0.1.0');
 	define('SCP_SLUG', 'show-comment-policy');
 	define('SCP_LOCAL', 'scp');
 	define('SCP_OPTION', 'scp');
@@ -51,8 +52,8 @@ if (!defined('SCP_PLUGIN_NAME')) {
 	}
 	// validation function
 	function scp_validation($input) {
+		// sanitize/validate all form fields
 		if (!empty($input)) {
-			// sanitize/validate all form fields
 			$input[SCP_DEFAULT_ENABLED_NAME] = (bool)$input[SCP_DEFAULT_ENABLED_NAME];
 			$input[SCP_DEFAULT_TEXT_NAME] = wp_kses_post(force_balance_tags($input[SCP_DEFAULT_TEXT_NAME]));
 			$input[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME] = (bool)$input[SCP_DEFAULT_DISPLAY_ON_POSTS_NAME];
@@ -61,7 +62,6 @@ if (!defined('SCP_PLUGIN_NAME')) {
 		}
 		return $input;
 	} 
-
 	// add Settings sub-menu
 	add_action('admin_menu', 'scp_plugin_menu');
 	function scp_plugin_menu() {
@@ -80,7 +80,7 @@ if (!defined('SCP_PLUGIN_NAME')) {
 			<div><?php _e('You are running plugin version', scp_get_local()); ?> <strong><?php echo SCP_VERSION; ?></strong>.</div>
 
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
-			<?php $active_tab = (!empty($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
 
 			<h2 class="nav-tab-wrapper">
 			  <a href="?page=<?php echo scp_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', scp_get_local()); ?></a>
@@ -176,7 +176,7 @@ if (!defined('SCP_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(SCP_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == scp_get_slug()) { // we are on this plugin's settings page
 						$options = scp_getpluginoptions();
 						if (!empty($options)) {
@@ -196,7 +196,7 @@ if (!defined('SCP_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(SCP_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == scp_get_slug()) { // we are on this plugin's settings page
 						scp_admin_styles();
 					}
