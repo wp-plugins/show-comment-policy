@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Show Comment Policy package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Show Comment Policy 0.0.3\n"
+"Project-Id-Version: Show Comment Policy 0.1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/show-comment-policy\n"
-"POT-Creation-Date: 2014-04-22 02:40:12+00:00\n"
+"POT-Creation-Date: 2014-08-14 16:41:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,94 +12,137 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: show-comment-policy.php:34
+#: show-comment-policy.php:37
 msgid "Do not access this file directly."
 msgstr ""
 
-#: show-comment-policy.php:72
+#: show-comment-policy.php:75
 msgid "You do not have sufficient permission to access this page"
 msgstr ""
 
-#: show-comment-policy.php:76
+#: show-comment-policy.php:79
 msgid " by "
 msgstr ""
 
-#: show-comment-policy.php:77
+#: show-comment-policy.php:80
 msgid "You are running plugin version"
 msgstr ""
 
-#: show-comment-policy.php:82
-msgid "Plugin Settings"
-msgstr ""
-
-#: show-comment-policy.php:86 show-comment-policy.php:89
-msgid "Is plugin enabled? Uncheck this to turn it off temporarily."
-msgstr ""
-
 #: show-comment-policy.php:86
-msgid "Plugin enabled?"
+msgid "Settings"
 msgstr ""
 
-#: show-comment-policy.php:90
-msgid "Choose where to display the comment policy"
-msgstr ""
-
-#: show-comment-policy.php:94
-msgid "Where to display comment policy? On Posts, Pages, or both?"
+#: show-comment-policy.php:87 show-comment-policy.php:120
+msgid "Support"
 msgstr ""
 
 #: show-comment-policy.php:95
+msgid "Plugin Settings"
+msgstr ""
+
+#: show-comment-policy.php:97 show-comment-policy.php:100
+msgid "Is plugin enabled? Uncheck this to turn it off temporarily."
+msgstr ""
+
+#: show-comment-policy.php:97
+msgid "Plugin enabled?"
+msgstr ""
+
+#: show-comment-policy.php:102
+msgid "Choose where to display the comment policy"
+msgstr ""
+
+#: show-comment-policy.php:106
+msgid "Where to display comment policy? On Posts, Pages, or both?"
+msgstr ""
+
+#: show-comment-policy.php:108
 msgid "Enter comment policy text"
 msgstr ""
 
-#: show-comment-policy.php:98
+#: show-comment-policy.php:111
 msgid ""
 "Type the comment policy text you want to display above the comments form on "
 "your site. HTML allowed."
 msgstr ""
 
-#: show-comment-policy.php:105 show-comment-policy.php:202
-msgid "Documentation"
-msgstr ""
-
-#: show-comment-policy.php:106 show-comment-policy.php:203
-msgid "FAQ"
-msgstr ""
-
-#: show-comment-policy.php:107
-msgid "If you like this plugin, please "
-msgstr ""
-
-#: show-comment-policy.php:109
-msgid "rate it on WordPress.org"
-msgstr ""
-
-#: show-comment-policy.php:111
-msgid "and click the "
-msgstr ""
-
 #: show-comment-policy.php:113
-msgid "Works"
+msgid "Show to non-logged-in users only?"
 msgstr ""
 
-#: show-comment-policy.php:115
-msgid "button. For support please visit the "
+#: show-comment-policy.php:116
+msgid ""
+"Check this box to display the comment policy to non-logged-in users only."
 msgstr ""
 
-#: show-comment-policy.php:117
-msgid "forums"
+#: show-comment-policy.php:146
+msgid "Set to show to non-logged-in users only, and current user is logged in."
 msgstr ""
 
-#: show-comment-policy.php:166
+#: show-comment-policy.php:185
 msgid "is currently disabled."
 msgstr ""
 
-#: show-comment-policy.php:189
-msgid "Settings"
+#: show-comment-policy.php:220
+msgid "<a href=\"http://wordpress.org/support/plugin/%s\">Support</a>"
 msgstr ""
 
-#: show-comment-policy.php:201
-msgid "Support"
+#: show-comment-policy.php:221 show-comment-policy.php:278
+msgid "<a href=\"http://wordpress.org/extend/plugins/%s/\">Documentation</a>"
+msgstr ""
+
+#: show-comment-policy.php:222
+msgid "<a href=\"http://wordpress.org/plugins/%s/faq/\">FAQ</a>"
+msgstr ""
+
+#: show-comment-policy.php:271
+msgid "<a href=\"options-general.php?page=%s\">Settings</a>"
+msgstr ""
+
+#: show-comment-policy.php:276
+msgid "Do you need help with this plugin? Check out the following resources:"
+msgstr ""
+
+#: show-comment-policy.php:279
+msgid "<a href=\"http://wordpress.org/plugins/%s/faq/\">FAQ</a><br />"
+msgstr ""
+
+#: show-comment-policy.php:280
+msgid ""
+"<a href=\"http://wordpress.org/support/plugin/%s\">Support Forum</a><br />"
+msgstr ""
+
+#: show-comment-policy.php:281
+msgid ""
+"<a href=\"http://www.jimmyscode.com/wordpress/%s\">Plugin Homepage / Demo</"
+"a><br />"
+msgstr ""
+
+#: show-comment-policy.php:282
+msgid ""
+"<a href=\"http://wordpress.org/extend/plugins/%s/developers/\">Development</"
+"a><br />"
+msgstr ""
+
+#: show-comment-policy.php:283
+msgid ""
+"<a href=\"http://wordpress.org/plugins/%s/changelog/\">Changelog</a><br />"
+msgstr ""
+
+#: show-comment-policy.php:286
+msgid ""
+"If you like this plugin, please <a href=\"http://wordpress.org/support/view/"
+"plugin-reviews/%s/\">rate it on WordPress.org</a>"
+msgstr ""
+
+#: show-comment-policy.php:287
+msgid ""
+" and click the <a href=\"http://wordpress.org/plugins/%s/#compatibility"
+"\">Works</a> button. "
+msgstr ""
+
+#: show-comment-policy.php:289
+msgid "Your donations encourage further development and support. "
 msgstr ""
 
 #. Plugin Name of the plugin/theme

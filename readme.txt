@@ -22,6 +22,14 @@ Use it for:
 <li>List of allowed HTML tags in comments</li>
 </ul>
 
+<h3>If you need help with this plugin</h3>
+
+If this plugin breaks your site or just flat out does not work, please go to <a href="http://wordpress.org/plugins/show-comment-policy/#compatibility">Compatibility</a> and click "Broken" after verifying your WordPress version and the version of the plugin you are using.
+
+Then, create a thread in the <a href="http://wordpress.org/support/plugin/show-comment-policy">Support</a> forum with a description of the issue. Make sure you are using the latest version of WordPress and the plugin before reporting issues, to be sure that the issue is with the current version and not with an older version where the issue may have already been fixed.
+
+<strong>Please do not use the <a href="http://wordpress.org/support/view/plugin-reviews/show-comment-policy">Reviews</a> section to report issues or request new features.</strong>
+
 == Installation ==
 
 1. Upload plugin file through the WordPress interface.
@@ -57,6 +65,9 @@ Add this to your functions.php:
 2. The comments section showing the comment policy entered on the plugin settings page
 
 == Changelog ==
+
+= 0.1.1 =
+- updated .pot file and readme
 
 = 0.1.0 =
 - fixed validation issue
@@ -94,6 +105,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+- updated .pot file and readme
 
 = 0.1.0 =
 - fixed validation issue
