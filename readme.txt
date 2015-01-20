@@ -49,6 +49,8 @@ Are you using another plugin that is also trying to use the <strong>comment_form
 
 Is the page/post cached?
 
+Are comments open? The comment policy will only display if comments are actually open.
+
 = How can I style the output? =
 
 The comment policy text is wrapped in div tags with class name "scp-comment-policy". Use this class in your local stylesheet to style the output how you want.
@@ -65,6 +67,9 @@ Add this to your functions.php:
 2. The comments section showing the comment policy entered on the plugin settings page
 
 == Changelog ==
+
+= 0.1.2 =
+- confirmed compatibility with WordPress 4.1
 
 = 0.1.1 =
 - updated .pot file and readme
@@ -105,6 +110,9 @@ Add this to your functions.php:
 - verified compatibility with 3.9
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+- confirmed compatibility with WordPress 4.1
 
 = 0.1.1 =
 - updated .pot file and readme
